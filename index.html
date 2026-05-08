@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova — 미래를 연결하다</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: rgba(255,255,255,0.07);
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --text: #e8e8f0;
+      --muted: #7a7a9a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 0.55rem 1.4rem;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+    }
+
+    /* animated gradient orbs */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); opacity: 0.25; pointer-events: none;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    .orb1 { width: 500px; height: 500px; background: var(--accent); top: 5%; left: -10%; }
+    .orb2 { width: 400px; height: 400px; background: var(--accent2); bottom: 10%; right: -8%; animation-delay: -4s; }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, 30px); } }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.8rem; color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 1.5rem;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent) 30%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      max-width: 560px; font-size: 1.15rem;
+      color: var(--muted); margin-bottom: 3rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      padding: 0.85rem 2rem;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 32px rgba(108,99,255,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 48px rgba(108,99,255,0.5); }
+    .btn-secondary {
+      padding: 0.85rem 2rem;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); border-radius: 12px;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: var(--muted); font-size: 0.75rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+    .hero-scroll svg { opacity: 0.5; }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item {
+      flex: 1; min-width: 180px;
+      padding: 2.5rem 2rem; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.8rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.4rem; }
+
+    /* ── FEATURES ── */
+    section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid rgba(108,99,255,0.4);
+      border-radius: 999px; font-size: 0.78rem;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); max-width: 480px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .feature-icon {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 14px;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      margin: 0 4rem 6rem;
+      background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(255,101,132,0.1));
+      border: 1px solid rgba(108,99,255,0.25);
+      border-radius: 28px; padding: 4rem;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900; letter-spacing: -1px; margin-bottom: 1rem;
+    }
+    .cta-banner p { color: var(--muted); margin-bottom: 2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      color: var(--muted); font-size: 0.85rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    /* ── SCROLL ANIMATION ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .cta-banner { margin: 0 1.5rem 4rem; padding: 2.5rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+      .stat-item { min-width: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Nova</div>
+    <ul class="nav-links">
+      <li><a href="#features">기능</a></li>
+      <li><a href="#pricing">요금</a></li>
+      <li><a href="#about">소개</a></li>
+    </ul>
+    <button class="nav-cta">무료로 시작하기</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      v2.0 출시 — 지금 바로 경험하세요
+    </div>
+
+    <h1>
+      당신의 아이디어를<br />
+      <span>현실로 만드세요</span>
+    </h1>
+
+    <p class="hero-sub">
+      Nova는 팀의 협업, 생산성, 창의성을 한 곳에서 극대화하는 차세대 플랫폼입니다.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary">지금 시작하기 →</button>
+      <button class="btn-secondary">데모 보기</button>
+    </div>
+
+    <div class="hero-scroll">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 10.5L3 5.5h10L8 10.5z"/>
+      </svg>
+      스크롤
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item fade-up">
+      <div class="stat-num">120K+</div>
+      <div class="stat-label">활성 사용자</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.1s">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">고객 만족도</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.2s">
+      <div class="stat-num">4.9★</div>
+      <div class="stat-label">앱스토어 평점</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.3s">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">고객 지원</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="fade-up">
+      <span class="section-tag">핵심 기능</span>
+      <h2 class="section-title">모든 것이 한 곳에</h2>
+      <p class="section-sub">복잡한 도구를 전환할 필요 없이, Nova 하나로 모든 업무를 처리하세요.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-up" style="transition-delay:0.05s">
+        <div class="feature-icon" style="background:rgba(108,99,255,0.15)">⚡</div>
+        <h3>초고속 성능</h3>
+        <p>업계 최고 수준의 응답 속도로 끊김 없는 작업 환경을 제공합니다.</p>
+      </div>
+      <div class="feature-card fade-up" style="transition-delay:0.1s">
+        <div class="feature-icon" style="background:rgba(255,101,132,0.15)">🤝</div>
+        <h3>실시간 협업</h3>
+        <p>팀원과 동시에 작업하고, 변경 사항을 실시간으로 공유하세요.</p>
+      </div>
+      <div class="feature-card fade-up" style="transition-delay:0.15s">
+        <div class="feature-icon" style="background:rgba(74,222,128,0.15)">🔒</div>
+        <h3>엔터프라이즈 보안</h3>
+        <p>AES-256 암호화와 SOC 2 인증으로 데이터를 안전하게 보호합니다.</p>
+      </div>
+      <div class="feature-card fade-up" style="transition-delay:0.2s">
+        <div class="feature-icon" style="background:rgba(251,191,36,0.15)">🧠</div>
+        <h3>AI 자동화</h3>
+        <p>반복 작업을 AI가 자동으로 처리하여 핵심 업무에 집중할 수 있습니다.</p>
+      </div>
+      <div class="feature-card fade-up" style="transition-delay:0.25s">
+        <div class="feature-icon" style="background:rgba(56,189,248,0.15)">📊</div>
+        <h3>심층 분석</h3>
+        <p>직관적인 대시보드로 팀 성과와 프로젝트 진행 상황을 한눈에 파악합니다.</p>
+      </div>
+      <div class="feature-card fade-up" style="transition-delay:0.3s">
+        <div class="feature-icon" style="background:rgba(167,139,250,0.15)">🔌</div>
+        <h3>500+ 연동</h3>
+        <p>Slack, Notion, GitHub 등 즐겨 쓰는 모든 도구와 자연스럽게 연결됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner fade-up">
+    <h2>오늘 바로 시작하세요</h2>
+    <p>신용카드 없이 14일 무료 체험. 언제든지 취소 가능.</p>
+    <button class="btn-primary">무료 체험 시작하기 →</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo" style="font-size:1.1rem">Nova</div>
+    <div class="footer-links">
+      <a href="#">이용약관</a>
+      <a href="#">개인정보처리방침</a>
+      <a href="#">문의하기</a>
+    </div>
+    <span>© 2026 Nova Inc. All rights reserved.</span>
+  </footer>
+
+  <script>
+    // scroll fade-in
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
